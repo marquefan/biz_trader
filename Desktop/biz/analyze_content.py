@@ -21,6 +21,7 @@ def main():
 	content = ""
 	try: 
 		content = get_list_from_file("data/"+sys.argv[3]).lower()
+		print "analyze data from: ",sys.argv[3]
 	except:
 		file_list = glob.glob("data/*")
 		content = get_list_from_file(max(file_list, key=os.path.getctime))   # letzte Datei finden
@@ -30,21 +31,23 @@ def main():
 	coincounter = [0] * len(currencylist)
 	coin_dates = [None] * len(currencylist)
 	coin_prices = [0] * len(currencylist)
-
 	# verschiedene bezeichnungen für die coins aufsplitten -> 2d Array
 	for currency_index, coin in enumerate(currencylist):
-		currencylist[currency_index] = coin.split(" ")
+		currencylist[currency_index] = coin.split(",")
 
 	counter = 0
 	content = content.split("\n")
+
 	for index, post in enumerate(content): 
 		htmlparser = HTMLParser()
 		content[index] = htmlparser.unescape(content[index])
 	
 		for coinindex, currency in enumerate(currencylist):
 			for currency_name in currency:
-				if contains_word(currency_name)(content[index]): 
+				if contains_word(currency_name)(content[index].replace("/", " ")):
+					#.replace damit eth/btc gefunden werden kann
 					coincounter[coinindex] += 1
+					#print currency_name, "was found, +1 ->",coinindex
 					coin_dates[coinindex] = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 			
 	init_db(currencylist, coincounter, coin_dates, coin_prices)
@@ -56,21 +59,9 @@ def main():
 		print "UPDATED DB"
 	else:
 		print "Too short time interval for update, time_delta(min. 30 MIN): ",delta_time
-
 		#content[index] = re.sub("\W+", " ", post)	# Sonderzeichen loswerden
+		
 
-	""" 
-	 	FOR TESTING
-			test = sys.argv[2]
-			if test and contains_word(test)(post):
-				counter += 1
-				print "{}: {}".format(test, counter)
-		"""
-	"""
-	print coincounter, "\n"
-	for currency in currencylist:
-		print currency[0]
-	"""
 	if options.howmanybestcoins:
 		get_best_coin(currencylist, coincounter, howmanybestcoins)
 	print "took:",time.time()-starting_time, "s"

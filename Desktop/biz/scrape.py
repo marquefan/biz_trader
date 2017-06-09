@@ -24,7 +24,7 @@ def main():
 	pagecount = 0
 
 	for page in jsonresponse:
-		print "going through pages ...",
+		print "going through netx page ...",
 		count += 1
 		threadcount = 0			# Page -> Thread -> Post
 		for thread in page["threads"]:
@@ -45,7 +45,7 @@ def main():
 				try:		
 					data.append(BeautifulSoup(str(post["com"])))
 				except:
-					print "wrong here: ",post 	#manche failen --> evt fehlende informationen
+					#print "wrong here: ",post 	#manche failen --> evt fehlende informationen
 					break
 	soup_data = convert_html_to_textlist(data)	
 	data_string = "\n".join(soup_data)
