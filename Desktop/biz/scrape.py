@@ -24,6 +24,7 @@ def main():
 	pagecount = 0
 
 	for page in jsonresponse:
+		print "going through pages ...",
 		count += 1
 		threadcount = 0			# Page -> Thread -> Post
 		for thread in page["threads"]:
