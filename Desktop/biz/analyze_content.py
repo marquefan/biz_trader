@@ -54,7 +54,12 @@ def main():
 	init_db(currencylist, coincounter, coin_dates, coin_prices)
 	calc_average(currencylist)
 	delta_time = time_delta()
-	"""
+	
+	#einzelne dateien updaten -> in der datenbank eine liste einführen
+	#die die namen der analisierten dateien enthält
+
+
+
 	if delta_time >= 30:
 		update_multiple(currencylist, coincounter, coin_dates)
 
@@ -62,18 +67,24 @@ def main():
 	else:
 		print "Too short time interval for update, time_delta(min. 30 MIN): ",delta_time
 		#content[index] = re.sub("\W+", " ", post)	# Sonderzeichen loswerden
-	"""
+	
 	brainy = Brain()
 	test_the_brain = Brain.rate_coin(brainy, currencylist)
-	print test_the_brain
+	#print test_the_brain
 
-	print Brain.highest_score(brainy)
+	print "Best score: ",currencylist[Brain.highest_score(brainy)]
 
-	update_multiple(currencylist, coincounter, coin_dates)
 	if options.howmanybestcoins:
 		get_best_coin(currencylist, coincounter, howmanybestcoins)
 	print "took:",time.time()-starting_time, "s"
 	
+def check_if_should_update(coin_tocheck, filename):
+	cid = get_id(coin_tocheck)
+	val = get_val(cid, "processed_data")
+	if val.index(filename):
+		return False
+	return True
+
 def get_best_coin(currencylist, coincounter, howmany):
 	bestcoins = [[x for x in range(2)] for y in range(howmany)]
 	bestcoin_names = [None] * howmany

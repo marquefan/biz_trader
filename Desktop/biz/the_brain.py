@@ -30,11 +30,13 @@ class Brain:
 		return self.coinscores
 	def highest_score(self):
 		highest = 0
+		idx = -1
 
 		for score in self.coinscores:
 			if score > highest:
 				highest = score
-		return highest
+				idx = self.coinscores.index(score)
+		return idx
 	def read_file(self, file):
 		try:
 			with open(file, "r") as f:
