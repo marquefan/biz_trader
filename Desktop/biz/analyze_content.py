@@ -80,8 +80,6 @@ def get_best_coin(currencylist, coincounter, howmany):
 	print "best coins are: \n"
 	print bestcoins, "\n"
 
-
-
 def contains_word(w):
 	return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 

@@ -1,6 +1,6 @@
 # coding=utf-8
 from tinydb import TinyDB, Query
-import json
+import json, datetime
 db = TinyDB("./db/db.json")
 Coin = Query()
 
@@ -11,7 +11,7 @@ def create_db(data):
 			"coin" 			:		data["coin"],
 			"value" 		: 		data["value"], 
 			"timestamps" 	:  		[data["timestamp"]],
-			"time_updates"	:		"cooming soon",
+			"time_updates"	:		[str(datetime.datetime.now())],
 			"price_history" : 		[]
 		}
 	)
@@ -48,10 +48,17 @@ def update_multiple(targets, values, timestamps):
 		valuesOfOneCoin.append(values[i])
 
 		timeStampOfOneCoin = get_val(id, "timestamps")
-		print timeStampOfOneCoin
 		timeStampOfOneCoin.append(timestamps[i])
 
-		db.update({"value" : valuesOfOneCoin, "timestamps":timeStampOfOneCoin}, eids=[id])
+		timestampsOfUpdates = get_val(id, "time_updates")
+		timestampsOfUpdates.append(str(datetime.datetime.now()))
+
+		db.update(
+			{
+				"value" 		: 	valuesOfOneCoin, 
+				"timestamps"	:	timeStampOfOneCoin,
+				"time_updates"	:	timestampsOfUpdates
+			}, eids=[id])
 	print values
 
 def calc_average(coins):
@@ -85,7 +92,6 @@ def init_db(currencylist, coincounter, coin_dates, price):
 					"value" : [coincounter[index]],
 					"average_mentions" : [coincounter[index]],
 					"timestamp" : str(coin_dates[index]),
-					"update_timestamp" : "coming soon",
 					"price_history" : price
 				}
 			)
