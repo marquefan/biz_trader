@@ -3,6 +3,7 @@ import sys, re, optparse, datetime, time, glob, os
 from HTMLParser import HTMLParser
 from db import *
 from cmc_api import *
+from the_brain import *
 # USAGE
 # 	python analyze_content.py info.txt
 
@@ -20,8 +21,8 @@ def main():
 	starting_time = time.time()
 	content = ""
 	try: 
-		content = get_list_from_file("data/"+sys.argv[3]).lower()
-		print "analyze data from: ",sys.argv[3]
+		content = get_list_from_file("data/"+sys.argv[1]).lower()
+		print "analyze data from: ",sys.argv[1]
 	except:
 		file_list = glob.glob("data/*")
 		content = get_list_from_file(max(file_list, key=os.path.getctime))   # letzte Datei finden
@@ -53,6 +54,7 @@ def main():
 	init_db(currencylist, coincounter, coin_dates, coin_prices)
 	calc_average(currencylist)
 	delta_time = time_delta()
+	"""
 	if delta_time >= 30:
 		update_multiple(currencylist, coincounter, coin_dates)
 
@@ -60,8 +62,14 @@ def main():
 	else:
 		print "Too short time interval for update, time_delta(min. 30 MIN): ",delta_time
 		#content[index] = re.sub("\W+", " ", post)	# Sonderzeichen loswerden
-		
+	"""
+	brainy = Brain()
+	test_the_brain = Brain.rate_coin(brainy, currencylist)
+	print test_the_brain
 
+	print Brain.highest_score(brainy)
+
+	update_multiple(currencylist, coincounter, coin_dates)
 	if options.howmanybestcoins:
 		get_best_coin(currencylist, coincounter, howmanybestcoins)
 	print "took:",time.time()-starting_time, "s"

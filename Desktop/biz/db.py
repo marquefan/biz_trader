@@ -70,7 +70,7 @@ def calc_average(coins):
 		for val in mentions:
 			length += 1
 			sum += val
-		avgr = sum/length
+		avgr = float(sum)/float(length)
 		db.update({"average" : avgr}, eids=[id])
 
 def get_timestamps(coin):

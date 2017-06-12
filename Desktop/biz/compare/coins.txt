@@ -91,7 +91,7 @@ TaaS,TAAS
 I/O,IOC
 Chronobank
 XtraBYtes,XBY
-Waves,Communication,WCT
+Communication,WCT
 Bitland,CADASTRAL
 Shift,SHIFT
 E-coin,ECN
