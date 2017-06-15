@@ -24,7 +24,7 @@ def main():
 	pagecount = 0
 
 	for page in jsonresponse:
-		print "going through netx page ...",
+		print "going through next page ...\n"
 		count += 1
 		threadcount = 0			# Page -> Thread -> Post
 		for thread in page["threads"]:
